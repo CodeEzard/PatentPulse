@@ -62,9 +62,6 @@ local_settings.py
 .env.test.local
 .env.production.local
 
-# Explicitly allow the example template to be committed
-!.env.example
-
 # ==========================================
 # Virtual Environments
 # ==========================================
