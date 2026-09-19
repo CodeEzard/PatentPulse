@@ -89,7 +89,18 @@ watch(
         </thead>
         <tbody>
           <tr v-for="p in results" :key="p.id">
-            <td>{{ p.title }}</td>
+            <td>
+              <a
+                :href="p.patent_url || ('https://patents.google.com/?q=' + encodeURIComponent(p.title + ' ' + p.assignee))"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="patent-link"
+                :title="'View on Google Patents: ' + p.title"
+              >
+                {{ p.title }}
+                <span class="external-icon" aria-hidden="true">↗</span>
+              </a>
+            </td>
             <td><span class="domain-tag">{{ p.technology_domain }}</span></td>
             <td>{{ p.assignee }}</td>
             <td>{{ p.filing_year }}</td>

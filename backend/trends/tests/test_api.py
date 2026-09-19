@@ -64,6 +64,15 @@ class PatentApiTests(APITestCase):
         payload = response.data["results"] if "results" in response.data else response.data
         self.assertEqual(payload[0]["keyword_list"], ["transformer", "attention", "sparsity"])
 
+    def test_patent_url_is_generated_for_google_patents(self):
+        url = reverse("patent-list")
+        response = self.client.get(url, {"domain": "AI/ML"})
+        payload = response.data["results"] if "results" in response.data else response.data
+        self.assertIn("patent_url", payload[0])
+        self.assertTrue(payload[0]["patent_url"].startswith("https://patents.google.com/?q="))
+        self.assertIn("Transformer+attention+sparsification", payload[0]["patent_url"])
+        self.assertIn("Northwind+AI", payload[0]["patent_url"])
+
 
 class TrendSummaryApiTests(APITestCase):
     def setUp(self):

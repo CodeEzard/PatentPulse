@@ -1,3 +1,5 @@
+from urllib.parse import quote_plus
+
 from rest_framework import serializers
 
 from .models import Patent
@@ -5,6 +7,7 @@ from .models import Patent
 
 class PatentSerializer(serializers.ModelSerializer):
     keyword_list = serializers.SerializerMethodField()
+    patent_url = serializers.SerializerMethodField()
 
     class Meta:
         model = Patent
@@ -17,12 +20,17 @@ class PatentSerializer(serializers.ModelSerializer):
             "citation_count",
             "keywords",
             "keyword_list",
+            "patent_url",
         ]
 
     def get_keyword_list(self, obj):
         if not obj.keywords:
             return []
         return [k.strip() for k in obj.keywords.split(",") if k.strip()]
+
+    def get_patent_url(self, obj):
+        query = f"{obj.title} {obj.assignee}".strip()
+        return f"https://patents.google.com/?q={quote_plus(query)}"
 
 
 class TrendPointSerializer(serializers.Serializer):
