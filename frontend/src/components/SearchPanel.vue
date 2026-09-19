@@ -4,6 +4,8 @@ const props = defineProps({
 })
 const filters = defineModel('filters', { required: true })
 
+const availableYears = [2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026]
+
 function clear() {
   filters.value = { domain: '', yearFrom: '', yearTo: '', search: '' }
 }
@@ -20,8 +22,18 @@ function clear() {
       <option value="">All domains</option>
       <option v-for="d in domains" :key="d" :value="d">{{ d }}</option>
     </select>
-    <input v-model="filters.yearFrom" type="number" placeholder="Year from" />
-    <input v-model="filters.yearTo" type="number" placeholder="Year to" />
+    <select v-model="filters.yearFrom">
+      <option value="">From year (Any)</option>
+      <option v-for="y in availableYears" :key="'from-' + y" :value="y">
+        From: {{ y }}
+      </option>
+    </select>
+    <select v-model="filters.yearTo">
+      <option value="">To year (Any)</option>
+      <option v-for="y in availableYears.slice().reverse()" :key="'to-' + y" :value="y">
+        To: {{ y }}
+      </option>
+    </select>
     <button type="button" @click="clear">Clear</button>
   </div>
 </template>
